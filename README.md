@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/Node-20%2B-brightgreen?logo=node.js)](https://nodejs.org)
 
-API de chat que rota automáticamente entre múltiples proveedores de IA gratuitos (Cerebras, Groq, OpenRouter) para maximizar el uso sin costos.
+API de chat que rota automáticamente entre múltiples proveedores de IA gratuitos (Cerebras, Groq, OpenRouter) para maximizar el uso sin costos. Perfecta para desplegar en EasyPanel.
 
 ## ✨ Características
 
