@@ -103,6 +103,29 @@ curl -X POST http://localhost:3000/api/chat \
 }
 ```
 
+### POST `/api/chat/stream`
+
+Recibe la respuesta de IA palabra por palabra en tiempo real (Server-Sent Events).
+
+```bash
+curl -X POST http://localhost:3000/api/chat/stream \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "message": "Explícame la computación cuántica",
+    "model": "default"
+  }'
+```
+
+**Respuesta (SSE):**
+```
+data: {"content": "La"}
+data: {"content": " computación"}
+data: {"content": " cuántica"}
+...
+data: [DONE]
+```
+
 ### POST `/api/chat/conversation`
 
 Envía una conversación completa con múltiples mensajes.

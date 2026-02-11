@@ -5,6 +5,7 @@ import { ProviderManager } from './services/ProviderManager.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
 import { authMiddleware } from './middleware/auth.js';
 import chatRoutes from './routes/chat.js';
+import logger from './utils/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,9 +20,9 @@ let providerManager;
 try {
     providerManager = new ProviderManager();
     app.set('providerManager', providerManager);
-    console.log('🚀 Provider Manager initialized successfully');
+    logger.info('🚀 Provider Manager initialized successfully');
 } catch (error) {
-    console.error('❌ Failed to initialize Provider Manager:', error.message);
+    logger.error('❌ Failed to initialize Provider Manager:', error.message);
     process.exit(1);
 }
 
@@ -52,10 +53,11 @@ app.get('/', (req, res) => {
         endpoints: {
             health: 'GET /health',
             chat: 'POST /api/chat',
+            chatStream: 'POST /api/chat/stream',
             conversation: 'POST /api/chat/conversation',
             providersStatus: 'GET /api/providers/status'
         },
-        documentation: 'https://github.com/ApiEasyPanel'
+        documentation: 'https://github.com/smatamala/ApiEasyPanel'
     });
 });
 
@@ -69,21 +71,18 @@ app.use((req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err);
+    logger.error('Unhandled request error:', err);
     res.status(500).json({
-        error: 'Internal server error',
+        error: 'Internal Server Error',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
 });
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`\n✨ Multi-AI Chat API is running!`);
-    console.log(`📍 Server: http://localhost:${PORT}`);
-    console.log(`🏥 Health: http://localhost:${PORT}/health`);
-    console.log(`📊 Status: http://localhost:${PORT}/api/providers/status`);
-    console.log(`\n🤖 Active providers: ${providerManager.providers.size}`);
-    console.log('─'.repeat(50));
+    logger.info(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    logger.info(`🏥 Health check available at http://localhost:${PORT}/health`);
+    logger.info(`🔐 Auth: ${process.env.API_TOKEN ? 'Enabled' : 'Disabled (WARNING: API is public!)'}`);
 });
 
 export default app;

@@ -142,4 +142,87 @@ router.get('/providers/status', (req, res) => {
     }
 });
 
+// POST /api/chat/stream
+router.post('/chat/stream', async (req, res) => {
+    try {
+        const { message, model = 'default' } = req.body;
+
+        if (!message || typeof message !== 'string') {
+            return res.status(400).json({
+                error: 'Message is required and must be a string'
+            });
+        }
+
+        const messages = [{
+            role: 'user',
+            content: message
+        }];
+
+        const providerManager = req.app.get('providerManager');
+        const result = await providerManager.stream(messages, model);
+
+        if (!result.success) {
+            return res.status(500).json({
+                error: result.error,
+                provider: result.provider
+            });
+        }
+
+        // Set headers for SSE
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        const stream = result.stream;
+        let fullContent = '';
+
+        stream.on('data', (chunk) => {
+            const lines = chunk.toString().split('\n').filter(line => line.trim() !== '');
+            for (const line of lines) {
+                if (line.includes('[DONE]')) {
+                    res.write('data: [DONE]\n\n');
+
+                    // Update usage after stream is done (estimate based on fullContent)
+                    const provider = providerManager.getProviderByName(result.provider.toLowerCase());
+                    if (provider) {
+                        const tokensUsed = Math.ceil((JSON.stringify(messages).length + fullContent.length) / 4);
+                        provider.updateUsage(tokensUsed);
+                    }
+
+                    return res.end();
+                }
+
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        const content = data.choices[0]?.delta?.content || '';
+                        if (content) {
+                            fullContent += content;
+                            res.write(`data: ${JSON.stringify({ content })}\n\n`);
+                        }
+                    } catch (e) {
+                        // Skip parse errors for non-json lines
+                    }
+                }
+            }
+        });
+
+        stream.on('error', (err) => {
+            console.error('Stream error:', err);
+            res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
+            res.end();
+        });
+
+        req.on('close', () => {
+            stream.destroy();
+        });
+
+    } catch (error) {
+        console.error('Chat stream error:', error);
+        res.status(500).json({
+            error: error.message
+        });
+    }
+});
+
 export default router;

@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+logs
+.env
+.git
+.gitignore
+README.md
+GITHUB_SETUP.md
+Multi-AI-Chat-API.postman_collection.json
+docker-compose.yml
+Dockerfile
+.agent
+.gemini
+package-lock.json

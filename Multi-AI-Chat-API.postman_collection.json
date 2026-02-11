@@ -59,6 +59,41 @@
             }
         },
         {
+            "name": "Chat Stream",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{apiToken}}",
+                        "description": "Optional - only needed if API_TOKEN is configured"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"message\": \"Explícame qué es la computación cuántica de forma muy breve.\",\n  \"model\": \"default\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/chat/stream",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "chat",
+                        "stream"
+                    ]
+                },
+                "description": "Recibe la respuesta de IA palabra por palabra en tiempo real"
+            }
+        },
+        {
             "name": "Chat con Modelo Fast",
             "request": {
                 "method": "POST",

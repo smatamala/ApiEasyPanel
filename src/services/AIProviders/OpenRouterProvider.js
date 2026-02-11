@@ -31,4 +31,23 @@ export class OpenRouterProvider extends BaseProvider {
             content: response.data.choices[0].message.content
         };
     }
+
+    async streamChat(messages, modelKey = 'default') {
+        const model = this.config.models[modelKey] || this.config.models.default;
+
+        const response = await this.client.post('/chat/completions', {
+            model,
+            messages,
+            stream: true,
+            max_tokens: 1024,
+            temperature: 0.7
+        }, {
+            responseType: 'stream'
+        });
+
+        return {
+            model: model,
+            data: response.data
+        };
+    }
 }

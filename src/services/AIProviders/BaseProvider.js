@@ -60,8 +60,8 @@ export class BaseProvider {
         };
     }
 
-    async chat(messages, model = 'default') {
-        throw new Error('chat() must be implemented by subclass');
+    async streamChat(messages, model = 'default') {
+        throw new Error('streamChat() must be implemented by subclass');
     }
 
     async makeRequest(messages, modelKey = 'default') {
@@ -85,6 +85,33 @@ export class BaseProvider {
                 model: response.model,
                 content: response.content,
                 tokensUsed
+            };
+        } catch (error) {
+            return {
+                success: false,
+                provider: this.name,
+                error: error.message
+            };
+        }
+    }
+
+    async makeStreamRequest(messages, modelKey = 'default') {
+        if (!this.canMakeRequest()) {
+            throw new Error(`${this.name} rate limit exceeded`);
+        }
+
+        try {
+            const stream = await this.streamChat(messages, modelKey);
+
+            // Increment request count immediately
+            this.usage.requestsToday += 1;
+            this.usage.requestsThisMinute += 1;
+
+            return {
+                success: true,
+                provider: this.name,
+                model: stream.model,
+                stream: stream.data
             };
         } catch (error) {
             return {

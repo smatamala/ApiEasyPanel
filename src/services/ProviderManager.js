@@ -2,6 +2,7 @@ import { getProviderConfig, getEnabledProviders } from '../config/providers.js';
 import { CerebrasProvider } from './AIProviders/CerebrasProvider.js';
 import { GroqProvider } from './AIProviders/GroqProvider.js';
 import { OpenRouterProvider } from './AIProviders/OpenRouterProvider.js';
+import logger from '../utils/logger.js';
 
 export class ProviderManager {
     constructor() {
@@ -18,7 +19,7 @@ export class ProviderManager {
             const apiKey = process.env[`${providerName.toUpperCase()}_API_KEY`];
 
             if (!apiKey) {
-                console.warn(`⚠️  No API key found for ${providerName}, skipping...`);
+                logger.warn(`No API key found for ${providerName}, skipping...`);
                 return;
             }
 
@@ -34,12 +35,12 @@ export class ProviderManager {
                     provider = new OpenRouterProvider(config, apiKey);
                     break;
                 default:
-                    console.warn(`⚠️  Unknown provider: ${providerName}`);
+                    logger.warn(`Unknown provider: ${providerName}`);
                     return;
             }
 
             this.providers.set(providerName, provider);
-            console.log(`✅ Initialized ${config.name} provider`);
+            logger.info(`Initialized ${config.name} provider`);
         });
 
         if (this.providers.size === 0) {
@@ -66,14 +67,67 @@ export class ProviderManager {
     }
 
     async chat(messages, modelPreference = 'default') {
-        const provider = this.getNextAvailableProvider();
+        const providerArray = Array.from(this.providers.values());
+        const totalProviders = providerArray.length;
+        let lastError = null;
 
-        if (!provider) {
-            throw new Error('All providers have reached their rate limits. Please try again later.');
+        // Try to get a response, falling back to other providers if one fails
+        for (let i = 0; i < totalProviders; i++) {
+            const provider = this.getNextAvailableProvider();
+
+            if (!provider) {
+                break;
+            }
+
+            try {
+                logger.info(`Using ${provider.name} (Attempt ${i + 1}/${totalProviders})`);
+                const result = await provider.makeRequest(messages, modelPreference);
+
+                if (result.success) {
+                    return result;
+                }
+
+                lastError = result.error;
+                logger.warn(`${provider.name} failed: ${lastError}. Trying next...`);
+            } catch (error) {
+                lastError = error.message;
+                logger.error(`Error with ${provider.name}: ${lastError}`);
+            }
         }
 
-        console.log(`🤖 Using ${provider.name} for this request`);
-        return await provider.makeRequest(messages, modelPreference);
+        throw new Error(`All providers failed. Last error: ${lastError || 'No providers available'}`);
+    }
+
+    async stream(messages, modelPreference = 'default') {
+        const providerArray = Array.from(this.providers.values());
+        const totalProviders = providerArray.length;
+        let lastError = null;
+
+        // Try to get a stream, falling back to other providers if one fails
+        for (let i = 0; i < totalProviders; i++) {
+            const provider = this.getNextAvailableProvider();
+
+            if (!provider) {
+                break;
+            }
+
+            try {
+                logger.info(`Streaming with ${provider.name} (Attempt ${i + 1}/${totalProviders})`);
+                const result = await provider.makeStreamRequest(messages, modelPreference);
+
+                if (result.success) {
+                    return result;
+                }
+
+                lastError = result.error;
+                logger.warn(`${provider.name} stream failed: ${lastError}. Trying next...`);
+            } catch (error) {
+                lastError = error.message;
+                logger.error(`Stream error with ${provider.name}: ${lastError}`);
+            }
+        }
+
+        throw new Error(`All providers failed to stream. Last error: ${lastError || 'No providers available'}`);
     }
 
     getAllProvidersStatus() {
