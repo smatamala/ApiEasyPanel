@@ -11,12 +11,10 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "http://localhost:3000/health",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/health",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "health"
                     ]
@@ -44,12 +42,10 @@
                     "raw": "{\n  \"message\": \"Hola, ¿cómo estás?\",\n  \"model\": \"default\"\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:3000/api/chat",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/chat",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "chat"
@@ -78,12 +74,10 @@
                     "raw": "{\n  \"message\": \"Explícame qué es la computación cuántica de forma muy breve.\",\n  \"model\": \"default\"\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:3000/api/chat/stream",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/chat/stream",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "chat",
@@ -108,12 +102,10 @@
                     "raw": "{\n  \"message\": \"¿Cuál es la capital de Francia?\",\n  \"model\": \"fast\"\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:3000/api/chat",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/chat",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "chat"
@@ -137,12 +129,10 @@
                     "raw": "{\n  \"message\": \"Explícame la teoría de la relatividad de Einstein de forma simple\",\n  \"model\": \"smart\"\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:3000/api/chat",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/chat",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "chat"
@@ -166,12 +156,10 @@
                     "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"¿Cuál es la capital de Francia?\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"La capital de Francia es París.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"¿Y cuántos habitantes tiene?\"\n    }\n  ],\n  \"model\": \"default\"\n}"
                 },
                 "url": {
-                    "raw": "http://localhost:3000/api/chat/conversation",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/chat/conversation",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "chat",
@@ -187,12 +175,10 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "http://localhost:3000/api/providers/status",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/api/providers/status",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         "api",
                         "providers",
@@ -208,12 +194,10 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "http://localhost:3000/",
-                    "protocol": "http",
+                    "raw": "{{baseUrl}}/",
                     "host": [
-                        "localhost"
+                        "{{baseUrl}}"
                     ],
-                    "port": "3000",
                     "path": [
                         ""
                     ]
@@ -225,7 +209,7 @@
     "variable": [
         {
             "key": "baseUrl",
-            "value": "http://localhost:3000",
+            "value": "https://apps-api.3bdmvb.easypanel.host",
             "type": "string"
         },
         {
