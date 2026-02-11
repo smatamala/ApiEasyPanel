@@ -214,7 +214,7 @@
         },
         {
             "key": "apiToken",
-            "value": "your_token_here",
+            "value": "b525cd62a9e6225475f23569f60eeb5571f4ed9e6223758e22d9215daf9d95a5",
             "type": "string",
             "description": "Optional API token for authentication"
         }
