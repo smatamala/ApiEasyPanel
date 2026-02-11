@@ -1,5 +1,9 @@
 # 🤖 Multi-AI Chat API
 
+[![GitHub](https://img.shields.io/badge/GitHub-smatamala%2FApiEasyPanel-blue?logo=github)](https://github.com/smatamala/ApiEasyPanel)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/Node-20%2B-brightgreen?logo=node.js)](https://nodejs.org)
+
 API de chat que rota automáticamente entre múltiples proveedores de IA gratuitos (Cerebras, Groq, OpenRouter) para maximizar el uso sin costos.
 
 ## ✨ Características
