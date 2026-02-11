@@ -1,0 +1,192 @@
+{
+    "info": {
+        "name": "Multi-AI Chat API",
+        "description": "API con rotación automática entre múltiples proveedores de IA (Cerebras, Groq, OpenRouter)",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/health",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "health"
+                    ]
+                },
+                "description": "Verifica que el servidor esté funcionando correctamente"
+            }
+        },
+        {
+            "name": "Chat Simple",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"message\": \"Hola, ¿cómo estás?\",\n  \"model\": \"default\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/chat",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "chat"
+                    ]
+                },
+                "description": "Envía un mensaje simple y recibe respuesta de IA"
+            }
+        },
+        {
+            "name": "Chat con Modelo Fast",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"message\": \"¿Cuál es la capital de Francia?\",\n  \"model\": \"fast\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/chat",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "chat"
+                    ]
+                },
+                "description": "Usa el modelo rápido para respuestas más veloces"
+            }
+        },
+        {
+            "name": "Chat con Modelo Smart",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"message\": \"Explícame la teoría de la relatividad de Einstein de forma simple\",\n  \"model\": \"smart\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/chat",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "chat"
+                    ]
+                },
+                "description": "Usa el modelo inteligente para respuestas más complejas"
+            }
+        },
+        {
+            "name": "Conversación Completa",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"¿Cuál es la capital de Francia?\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"La capital de Francia es París.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"¿Y cuántos habitantes tiene?\"\n    }\n  ],\n  \"model\": \"default\"\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/api/chat/conversation",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "chat",
+                        "conversation"
+                    ]
+                },
+                "description": "Envía una conversación completa con contexto"
+            }
+        },
+        {
+            "name": "Estado de Proveedores",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/api/providers/status",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "api",
+                        "providers",
+                        "status"
+                    ]
+                },
+                "description": "Obtiene el estado y uso de todos los proveedores de IA"
+            }
+        },
+        {
+            "name": "API Info",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3000/",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        ""
+                    ]
+                },
+                "description": "Información general de la API y endpoints disponibles"
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000",
+            "type": "string"
+        }
+    ]
+}

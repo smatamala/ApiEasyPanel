@@ -1,0 +1,32 @@
+{
+  "name": "api-easy-panel",
+  "version": "1.0.0",
+  "description": "Multi-AI Chat API with automatic provider rotation for free AI services",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "api",
+    "cerebras",
+    "groq",
+    "openrouter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.5",
+    "dotenv": "^16.3.1",
+    "express-rate-limit": "^7.1.5",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
