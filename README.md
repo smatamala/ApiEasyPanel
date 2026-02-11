@@ -13,6 +13,7 @@ API de chat que rota automáticamente entre múltiples proveedores de IA gratuit
 - 🚀 **3 proveedores integrados**: Cerebras, Groq, OpenRouter
 - 🐳 **Docker ready** para despliegue en EasyPanel
 - 🛡️ **Rate limiting** global para protección de la API
+- 🔐 **Autenticación con Bearer Token** (opcional)
 - 📈 **Monitoreo de estado** de todos los proveedores
 
 ## 🚀 Inicio Rápido
@@ -56,6 +57,23 @@ GROQ_API_KEY=tu_clave_aqui
 OPENROUTER_API_KEY=tu_clave_aqui
 ```
 
+### 🔐 Configuración de Autenticación (Opcional)
+
+Para proteger tu API con un token de autenticación:
+
+```bash
+# Generar un token seguro
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Agrega el token generado a tu `.env`:
+
+```env
+API_TOKEN=tu_token_generado_aqui
+```
+
+**Nota**: Si no configuras `API_TOKEN`, la API funcionará sin autenticación (útil para desarrollo local).
+
 ## 📡 Endpoints
 
 ### POST `/api/chat`
@@ -65,11 +83,14 @@ Envía un mensaje simple y recibe respuesta de IA.
 ```bash
 curl -X POST http://localhost:3000/api/chat \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
     "message": "Hola, ¿cómo estás?",
     "model": "default"
   }'
 ```
+
+**Nota**: El header `Authorization` solo es necesario si configuraste `API_TOKEN`.
 
 **Respuesta:**
 ```json
@@ -165,6 +186,7 @@ En EasyPanel, agrega estas variables:
 ```
 NODE_ENV=production
 PORT=3000
+API_TOKEN=your_secure_production_token
 CEREBRAS_API_KEY=tu_clave
 GROQ_API_KEY=tu_clave
 OPENROUTER_API_KEY=tu_clave

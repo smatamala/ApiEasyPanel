@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { ProviderManager } from './services/ProviderManager.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
+import { authMiddleware } from './middleware/auth.js';
 import chatRoutes from './routes/chat.js';
 
 const app = express();
@@ -23,6 +24,9 @@ try {
     console.error('❌ Failed to initialize Provider Manager:', error.message);
     process.exit(1);
 }
+
+// Apply authentication to all routes
+app.use(authMiddleware);
 
 // Apply rate limiting to API routes
 app.use('/api', apiLimiter);

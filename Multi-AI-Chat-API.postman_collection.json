@@ -32,6 +32,11 @@
                     {
                         "key": "Content-Type",
                         "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{apiToken}}",
+                        "description": "Optional - only needed if API_TOKEN is configured"
                     }
                 ],
                 "body": {
@@ -187,6 +192,12 @@
             "key": "baseUrl",
             "value": "http://localhost:3000",
             "type": "string"
+        },
+        {
+            "key": "apiToken",
+            "value": "your_token_here",
+            "type": "string",
+            "description": "Optional API token for authentication"
         }
     ]
 }
